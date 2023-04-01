@@ -1,0 +1,2 @@
+* add s3 work arounds
+* finish test suite based on https://github.com/aws/aws-sdk-js-v3/blob/6d48f1be/packages/signature-v4/src/suite.fixture.ts#L5 
