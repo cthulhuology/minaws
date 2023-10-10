@@ -206,7 +206,7 @@ async function sign(service,region,creds,date,request) {
 // Generate a presigned URL
 // https://docs.aws.amazon.com/general/latest/gr/create-signed-request.html#add-signature-to-request
 // https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-query-string-auth.html
-async function signUrl(service,region,creds,date,expires,payload,request) {
+async function presign(service,region,creds,date,expires,payload,request) {
 	const access = creds.accessKeyId
 	const secret = creds.secretAccessKey
 	const session = creds.sessionToken
@@ -224,4 +224,4 @@ async function signUrl(service,region,creds,date,expires,payload,request) {
 		(session ? "&X-Amz-Security-Token=" + encodeURIComponent(session) : "")
 }
 
-module.exports = { sign, signUrl, credentials }
+module.exports = { sign, presign, credentials }
