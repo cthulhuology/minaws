@@ -98,7 +98,7 @@ function parseUrl(url) {
 
 // unsignable headers
 function signable(key) {
-	return [ 'authorization', 'content-type', 'content-length', 'user-agent', 'expect', 'x-amzn-trace-id' ].indexOf(key.toLowerCase()) < 0
+	return [ 'authorization', 'content-length', 'user-agent', 'expect', 'x-amzn-trace-id' ].indexOf(key.toLowerCase()) < 0
 }
 
 // Set the amz timestamp, sessiontoken, and host for the request
