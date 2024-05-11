@@ -26,7 +26,7 @@
 //
 //
 
-async function getId(region,identityPoolId,provider,jwt) {
+export const getId async (region,identityPoolId,provider,jwt) => {
 	const service = "cognito-identity"
 	const endpoint = "https://" + service + "." + region + ".amazonaws.com"
 	const target = "com.amazonaws.cognito.identity.model.AWSCognitoIdentityService.GetId"
@@ -49,7 +49,7 @@ async function getId(region,identityPoolId,provider,jwt) {
 	return json.IdentityId
 }
 
-async function getCredentialsForIdentity(region,identityId,provider,jwt) {
+export const getCredentialsForIdentity = async (region,identityId,provider,jwt) => {
 	const service = "cognito-identity"
 	const endpoint = "https://" + service + "." + region + ".amazonaws.com"
 	const target = "com.amazonaws.cognito.identity.model.AWSCognitoIdentityService.GetCredentialsForIdentity"
@@ -72,7 +72,7 @@ async function getCredentialsForIdentity(region,identityId,provider,jwt) {
 	return json
 }
 
-async function credentials(region,identityPoolId,provider,jwt) {
+export const credentials = async (region,identityPoolId,provider,jwt) => {
 	const identityId = await getId(region,identityPoolId,provider,jwt)
 	const cognito = await getCredentialsForIdentity(region,identityId,provider,jwt)
 	const accessKeyId = cognito.Credentials.AccessKeyId

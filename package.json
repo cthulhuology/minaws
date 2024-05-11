@@ -1,0 +1,36 @@
+{
+  "name": "minaws",
+  "version": "1.0.0",
+  "description": "Minimal Interface to AWS APIs",
+  "main": "minaws.mjs",
+  "type": "module",
+  "exports": {
+    ".": "./minaws.mjs",
+    "./cognito": "./cognito.mjs",
+    "./iot": "./iot.mjs"
+  },
+  "scripts": {
+    "test": "./test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cthulhuology/minaws.git"
+  },
+  "keywords": [
+    "AWS",
+    "minimal",
+    "javascript"
+  ],
+  "author": "David Goehrig <dave@dloh.org>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cthulhuology/minaws/issues"
+  },
+  "homepage": "https://github.com/cthulhuology/minaws",
+  "depdendencies": {
+    "mqtt": "~5.5.5"
+  },
+  "dependencies": {
+    "mqtt": "^5.5.5"
+  }
+}

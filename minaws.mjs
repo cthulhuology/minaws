@@ -27,14 +27,6 @@
 //
 // aws sigv4 requests using Crypto.Subtle
 
-// Use STS creds from environment variables
-function credentials() {
-	const accessKeyId = process.env["AWS_ACCESS_KEY_ID"]
-	const secretAccessKey = process.env["AWS_SECRET_ACCESS_KEY"]
-	const sessionToken = process.env["AWS_SESSION_TOKEN"]
-	return { accessKeyId, secretAccessKey, sessionToken }
-}
-
 // YYYYMMDDTHHMMSSZ
 function amznDate(date) {
 	return date.toISOString().slice(0, 19).replace(/[^\dT]/g, "") + 'Z' // YYYYMMDDTHHMMSSZ
@@ -182,7 +174,7 @@ function authToken(access,service,region,date,signedHeaders,sig) {
 
 // Sign a request, returns the signed Request object
 // https://docs.aws.amazon.com/general/latest/gr/create-signed-request.html#add-signature-to-request
-async function sign(service,region,creds,date,request) {
+export const sign = async (service,region,creds,date,request,payload) => {
 	const access = creds.accessKeyId
 	const secret = creds.secretAccessKey
 	const session = creds.sessionToken
@@ -191,8 +183,8 @@ async function sign(service,region,creds,date,request) {
 	const { host, pathname, params } = parseUrl(url)
 	const headers = createHeaders(request.headers,host,session,date)
 	const { canonicalHeaders, signedHeaders } = canonicalize(headers)
-	const body = await bodyOf(request)
-	const bodysig = body ? hex(await digest(body )) : hex(await digest(""))
+	const body = payload || null
+	const bodysig = body !== null ? hex(await digest(body)) : hex(await digest(""))
 	const cr = canonicalRequest(method,pathname,params,canonicalHeaders,signedHeaders,bodysig)
 	const crsig = hex(await digest(cr))
 	const ss = stringToSign(service,region,date,crsig)
@@ -206,7 +198,7 @@ async function sign(service,region,creds,date,request) {
 // Generate a presigned URL
 // https://docs.aws.amazon.com/general/latest/gr/create-signed-request.html#add-signature-to-request
 // https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-query-string-auth.html
-async function presign(service,region,creds,date,expires,payload,request) {
+export const presign = async (service,region,creds,date,expires,payload,request) => {
 	const access = creds.accessKeyId
 	const secret = creds.secretAccessKey
 	const session = creds.sessionToken
@@ -224,4 +216,10 @@ async function presign(service,region,creds,date,expires,payload,request) {
 		(session ? "&X-Amz-Security-Token=" + encodeURIComponent(session) : "")
 }
 
-module.exports = { sign, presign, credentials }
+// Use STS creds from environment variables
+export const credentials = () => {
+	const accessKeyId = process.env["AWS_ACCESS_KEY_ID"]
+	const secretAccessKey = process.env["AWS_SECRET_ACCESS_KEY"]
+	const sessionToken = process.env["AWS_SESSION_TOKEN"]
+	return { accessKeyId, secretAccessKey, sessionToken }
+}
