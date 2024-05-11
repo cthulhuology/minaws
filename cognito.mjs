@@ -26,7 +26,7 @@
 //
 //
 
-export const getId async (region,identityPoolId,provider,jwt) => {
+export const getId = async (region,identityPoolId,provider,jwt) => {
 	const service = "cognito-identity"
 	const endpoint = "https://" + service + "." + region + ".amazonaws.com"
 	const target = "com.amazonaws.cognito.identity.model.AWSCognitoIdentityService.GetId"
